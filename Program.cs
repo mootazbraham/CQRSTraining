@@ -1,7 +1,7 @@
 using System.Reflection;
 using CQRSProject;
 using MediatR;
-
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,11 +10,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
+builder.Services.AddRazorPages();
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.s
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
